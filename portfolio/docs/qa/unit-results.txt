@@ -1,0 +1,13 @@
+
+> portfolio@0.1.0 test /home/user/n8n/portfolio
+> vitest run
+
+
+ RUN  v5.0.3 /home/user/n8n/portfolio
+
+
+ Test Files  3 passed (3)
+      Tests  33 passed (33)
+   Start at  13:36:28
+   Duration  542ms (transform 54%, import 31%, tests 13%, worker 2%)
+

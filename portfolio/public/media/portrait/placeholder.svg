@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500">
+  <!-- Neutral, featureless silhouette: a placeholder that does not depict anyone. -->
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5E6164"/><stop offset="1" stop-color="#55585B"/></linearGradient></defs>
+  <ellipse cx="600" cy="520" rx="215" ry="255" fill="url(#g)"/>
+  <rect x="525" y="740" width="150" height="150" fill="url(#g)"/>
+  <path d="M120 1500 C140 1080 330 900 600 880 C870 900 1060 1080 1080 1500 Z" fill="url(#g)"/>
+</svg>

@@ -1,0 +1,39 @@
+.wrap {
+	position: relative;
+	z-index: 1;
+	height: 0;
+	/* Clip the oversized curve sideways only, so it never widens the page. */
+	overflow-x: clip;
+	overflow-y: visible;
+}
+
+.curve {
+	position: absolute;
+	left: -10%;
+	width: 120%;
+	top: -1px;
+	height: clamp(3rem, 10vh, 8rem);
+	background: var(--color-bg);
+	border-radius: 0 0 50% 50%;
+	transform-origin: top center;
+	box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.08);
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.curve {
+			animation: flatten linear both;
+			animation-timeline: view();
+			animation-range: entry 0% exit 30%;
+		}
+	}
+}
+
+@keyframes flatten {
+	from {
+		transform: scaleY(1);
+	}
+	to {
+		transform: scaleY(0);
+	}
+}

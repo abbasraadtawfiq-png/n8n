@@ -1,0 +1,53 @@
+/* Shared layout for inner pages (Work, Project, About, Privacy, 404). */
+.page {
+	padding-top: calc(var(--header-h) + clamp(4rem, 14vh, 10rem));
+	padding-bottom: var(--section-y);
+}
+
+.headline {
+	font-size: var(--text-display);
+	font-weight: 400;
+	line-height: var(--leading-tight);
+	letter-spacing: var(--tracking-display);
+	max-width: 14em;
+	margin-bottom: clamp(3rem, 8vw, 7rem);
+}
+
+.lede {
+	font-size: var(--text-lg);
+	line-height: 1.35;
+	max-width: 32em;
+	color: var(--color-ink-soft);
+}
+
+.prose {
+	display: grid;
+	gap: 1.25rem;
+	max-width: 42rem;
+	font-size: var(--text-base);
+}
+
+.prose h2 {
+	font-size: var(--text-lg);
+	font-weight: 500;
+	margin-top: 1.5rem;
+}
+
+.prose ul {
+	list-style: disc;
+	padding-left: 1.25rem;
+	display: grid;
+	gap: 0.4rem;
+}
+
+.prose a {
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-top: 2.5rem;
+}

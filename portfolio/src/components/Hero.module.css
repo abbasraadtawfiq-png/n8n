@@ -1,0 +1,168 @@
+.hero {
+	position: relative;
+	height: 100svh;
+	min-height: 34rem;
+	max-height: 75rem;
+	/* clip (not hidden): keeps the hero out of the scroll-container chain for view() timelines. */
+	overflow: clip;
+	background: var(--color-hero);
+	color: #fff;
+}
+
+.parallax {
+	position: absolute;
+	inset: 0;
+}
+
+/* Gentle drift as the hero scrolls away; CSS-only, skipped where unsupported. */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.parallax {
+			animation: hero-drift linear both;
+			animation-timeline: view();
+			animation-range: exit 0% exit 100%;
+		}
+	}
+}
+
+@keyframes hero-drift {
+	to {
+		transform: translateY(18%);
+	}
+}
+
+.portrait {
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	width: min(62vw, 72svh);
+	transform: translateX(-50%);
+}
+
+.portrait img {
+	width: 100%;
+	height: auto;
+}
+
+.placeholder {
+	position: relative;
+}
+
+.placeholder figcaption {
+	position: absolute;
+	left: 50%;
+	top: 30%;
+	transform: translateX(-50%);
+	padding: 0.35rem 0.8rem;
+	border-radius: var(--radius-pill);
+	background: rgba(28, 29, 32, 0.55);
+	font-size: var(--text-xs);
+	white-space: nowrap;
+}
+
+.title {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: clamp(2rem, 8svh, 5rem);
+	font-weight: 400;
+	margin: 0;
+}
+
+.hanger {
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	align-items: center;
+	gap: 2.25rem;
+	padding: 1.4rem 1.4rem 1.4rem max(var(--gutter), var(--safe-left));
+	border-radius: 0 999px 999px 0;
+	background: var(--color-ink);
+	font-size: var(--text-sm);
+	line-height: 1.3;
+}
+
+.globe {
+	display: grid;
+	place-items: center;
+	width: 4.25rem;
+	height: 4.25rem;
+	border-radius: 50%;
+	background: #9a9b9f;
+	color: var(--color-ink);
+	flex: none;
+}
+
+.globe svg {
+	width: 55%;
+	height: 55%;
+	animation: spin 9s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.role {
+	position: absolute;
+	right: max(var(--gutter), var(--safe-right));
+	top: 47%;
+	font-size: var(--text-xl);
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+}
+
+.arrow {
+	width: 1.1em;
+	height: 1.1em;
+	margin-bottom: 1.6em;
+}
+
+.motionToggle {
+	position: absolute;
+	left: max(var(--gutter), var(--safe-left));
+	bottom: 0.75rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	min-height: 44px;
+	padding-inline: 0.25rem;
+	color: #fff;
+	font-size: var(--text-xs);
+}
+
+.motionToggle:hover span {
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.motionToggle:focus-visible {
+	outline-color: #fff;
+}
+
+@media (max-width: 47.99rem) {
+	.hero {
+		min-height: 36rem;
+	}
+	.portrait {
+		width: min(130vw, 85svh);
+		bottom: 0;
+	}
+	.hanger {
+		display: none;
+	}
+	.role {
+		top: auto;
+		left: max(var(--gutter), var(--safe-left));
+		right: auto;
+		bottom: calc(clamp(2rem, 8svh, 5rem) + var(--text-hero) * 1.15);
+		font-size: var(--text-lg);
+	}
+	.arrow {
+		margin-bottom: 1em;
+	}
+}

@@ -1,0 +1,225 @@
+{
+  "date": "2026-10-04T13:29:21.286Z",
+  "base": "http://localhost:3100",
+  "lighthouse": "13.5.0",
+  "buildId": "xsLDN4hFNuwCXGFVvI2C3",
+  "runs": 3,
+  "results": [
+    {
+      "formFactor": "mobile",
+      "path": "/",
+      "median": {
+        "performance": 98,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 66,
+        "lcpMs": 2454,
+        "tbtMs": 34,
+        "cls": 0,
+        "fcpMs": 909,
+        "transferKB": 303,
+        "scriptKB": 215
+      },
+      "samples": [
+        {
+          "performance": 98,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 2483,
+          "tbtMs": 34,
+          "cls": 0,
+          "fcpMs": 912,
+          "transferKB": 303,
+          "scriptKB": 215
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 2060,
+          "tbtMs": 37,
+          "cls": 0,
+          "fcpMs": 909,
+          "transferKB": 303,
+          "scriptKB": 215
+        },
+        {
+          "performance": 98,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 2454,
+          "tbtMs": 33,
+          "cls": 0,
+          "fcpMs": 908,
+          "transferKB": 303,
+          "scriptKB": 215
+        }
+      ]
+    },
+    {
+      "formFactor": "mobile",
+      "path": "/work/soft-matter",
+      "median": {
+        "performance": 97,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 66,
+        "lcpMs": 2488,
+        "tbtMs": 106,
+        "cls": 0,
+        "fcpMs": 913,
+        "transferKB": 285,
+        "scriptKB": 196
+      },
+      "samples": [
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 1895,
+          "tbtMs": 106,
+          "cls": 0,
+          "fcpMs": 913,
+          "transferKB": 285,
+          "scriptKB": 196
+        },
+        {
+          "performance": 97,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 2488,
+          "tbtMs": 101,
+          "cls": 0,
+          "fcpMs": 913,
+          "transferKB": 285,
+          "scriptKB": 196
+        },
+        {
+          "performance": 96,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 2590,
+          "tbtMs": 125,
+          "cls": 0,
+          "fcpMs": 915,
+          "transferKB": 285,
+          "scriptKB": 196
+        }
+      ]
+    },
+    {
+      "formFactor": "desktop",
+      "path": "/",
+      "median": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 66,
+        "lcpMs": 559,
+        "tbtMs": 0,
+        "cls": 0,
+        "fcpMs": 250,
+        "transferKB": 296,
+        "scriptKB": 215
+      },
+      "samples": [
+        {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 559,
+          "tbtMs": 0,
+          "cls": 0,
+          "fcpMs": 250,
+          "transferKB": 296,
+          "scriptKB": 215
+        },
+        {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 550,
+          "tbtMs": 0,
+          "cls": 0,
+          "fcpMs": 247,
+          "transferKB": 296,
+          "scriptKB": 215
+        },
+        {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 567,
+          "tbtMs": 1,
+          "cls": 0,
+          "fcpMs": 250,
+          "transferKB": 296,
+          "scriptKB": 215
+        }
+      ]
+    },
+    {
+      "formFactor": "desktop",
+      "path": "/work/soft-matter",
+      "median": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 66,
+        "lcpMs": 568,
+        "tbtMs": 0,
+        "cls": 0,
+        "fcpMs": 249,
+        "transferKB": 283,
+        "scriptKB": 196
+      },
+      "samples": [
+        {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 568,
+          "tbtMs": 0,
+          "cls": 0,
+          "fcpMs": 249,
+          "transferKB": 283,
+          "scriptKB": 196
+        },
+        {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 563,
+          "tbtMs": 0,
+          "cls": 0,
+          "fcpMs": 249,
+          "transferKB": 283,
+          "scriptKB": 196
+        },
+        {
+          "performance": 100,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 66,
+          "lcpMs": 568,
+          "tbtMs": 0,
+          "cls": 0,
+          "fcpMs": 248,
+          "transferKB": 283,
+          "scriptKB": 196
+        }
+      ]
+    }
+  ]
+}

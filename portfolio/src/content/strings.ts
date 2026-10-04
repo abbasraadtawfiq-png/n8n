@@ -1,0 +1,113 @@
+/**
+ * Interface copy, kept in one place so another language can be added later
+ * without touching components. Project and identity copy live in site.ts and
+ * projects.ts.
+ */
+export const strings = {
+	skipToContent: 'Skip to content',
+	nav: {
+		home: 'Home',
+		work: 'Work',
+		about: 'About',
+		contact: 'Contact',
+		label: 'Main',
+		menu: 'Menu',
+		navigation: 'Navigation',
+	},
+	menu: { open: 'Open menu', close: 'Close menu', socials: 'Socials' },
+	brand: { prefix: 'Design by' },
+	preview: {
+		banner: 'Preview build — placeholder identity and sample projects. Not indexed.',
+		sample: 'Sample',
+		sampleNotice:
+			'Sample project — placeholder artwork and copy used to preview the layout. Not a real commission.',
+		portrait: 'Portrait placeholder',
+	},
+	hero: { locatedIn: 'Located in', pauseMotion: 'Pause motion', playMotion: 'Play motion' },
+	home: { aboutCta: 'About me', recentWork: 'Recent work', moreWork: 'More work' },
+	work: {
+		headline: 'Selected graphic design & 3D work',
+		filterLabel: 'Filter projects by category',
+		all: 'All',
+		viewLabel: 'Layout',
+		listView: 'List view',
+		gridView: 'Grid view',
+		columns: { project: 'Project', category: 'Category', role: 'Role', year: 'Year' },
+		empty: 'No projects in this category yet.',
+		showAll: 'Show all projects',
+		view: 'View',
+		count: (n: number) => `${n} ${n === 1 ? 'project' : 'projects'}`,
+	},
+	project: {
+		overview: 'Overview',
+		challenge: 'Brief',
+		approach: 'Approach',
+		deliverables: 'Deliverables',
+		results: 'Results',
+		tools: 'Tools',
+		nextCase: 'Next case',
+		allWork: 'All work',
+		backToWork: 'Back to work',
+		visit: 'Live site',
+	},
+	about: {
+		headline: 'Shaping images that hold attention',
+		helpWith: 'I can help you with',
+		contactCta: 'Get in touch',
+	},
+	contact: {
+		headline: ['Let’s start a', 'project together'],
+		details: 'Contact details',
+		location: 'Location',
+		socials: 'Socials',
+		notConfigured:
+			'The inquiry form is not connected to an email service in this build, so messages cannot be sent yet.',
+		fields: {
+			name: 'What’s your name?',
+			email: 'What’s your email?',
+			company: 'What’s the name of your organization? (optional)',
+			budget: 'Do you have a budget in mind? (optional)',
+			message: 'Tell me about your project',
+		},
+		placeholders: {
+			name: 'Full name *',
+			email: 'name@example.com *',
+			company: 'Organization',
+			budget: 'Approximate budget',
+			message: 'A few lines about the project, timing and goals *',
+		},
+		submit: 'Send it!',
+		sending: 'Sending…',
+		required: 'Required fields are marked *',
+		success: 'Thank you — your message was accepted for delivery. I’ll reply by email.',
+		errors: {
+			name: 'Please enter your name.',
+			email: 'Please enter a valid email address.',
+			message: 'Please write at least 10 characters about your project.',
+			tooLong: 'This is too long.',
+			invalid: 'Please check the highlighted fields.',
+			rateLimited: (minutes: number) =>
+				`Too many messages from this connection. Please try again in about ${minutes} minute${minutes === 1 ? '' : 's'}.`,
+			notConfigured: 'Not sent: the form is not connected to an email service yet.',
+			provider: 'Not sent: the email service did not accept the message. Please try again in a moment.',
+			network: 'Not sent: the connection failed. Check your connection and try again.',
+			unknown: 'Not sent: something went wrong. Please try again.',
+		},
+	},
+	footer: {
+		heading: ['Let’s work', 'together'],
+		cta: 'Get in touch',
+		version: 'Version',
+		edition: (year: string) => `${year} © Edition`,
+		localTime: 'Local time',
+		socials: 'Socials',
+		privacy: 'Privacy',
+	},
+	notFound: { title: 'Page not found', body: 'This page doesn’t exist or has moved.', home: 'Back home' },
+	error: {
+		title: 'Something went wrong',
+		body: 'The page failed to load. You can try again.',
+		retry: 'Try again',
+		home: 'Back home',
+	},
+} as const;

@@ -1,0 +1,220 @@
+.root {
+	position: relative;
+}
+
+/* Floating circular trigger */
+.trigger {
+	position: fixed;
+	top: calc(var(--safe-top) + clamp(1rem, 2.4vw, 2rem));
+	right: calc(var(--safe-right) + clamp(1rem, 2.4vw, 2rem));
+	z-index: var(--z-menu-button);
+	width: var(--menu-button);
+	height: var(--menu-button);
+	border-radius: 50%;
+	background: var(--color-ink);
+	color: #fff;
+	display: grid;
+	place-items: center;
+	transform: scale(0);
+	transition:
+		transform var(--dur-button) var(--ease-out),
+		background-color var(--dur-hover) ease;
+	box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.12);
+}
+
+.trigger[data-visible] {
+	transform: scale(1);
+}
+
+.trigger:hover,
+.root[data-open] .trigger {
+	background: var(--color-accent);
+}
+
+.trigger:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 4px;
+}
+
+.root[data-open] .trigger:focus-visible {
+	outline-color: #fff;
+}
+
+.burger,
+.burger::before {
+	display: block;
+	width: 32%;
+	min-width: 1.25rem;
+	height: 1px;
+	background: currentColor;
+	transition: transform var(--dur-button) var(--ease-out);
+}
+
+.burger {
+	position: relative;
+	transform: translateY(-0.25rem);
+}
+
+.burger::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	width: 100%;
+	transform: translateY(0.5rem);
+}
+
+.root[data-open] .burger {
+	transform: rotate(45deg);
+}
+
+.root[data-open] .burger::before {
+	transform: rotate(-90deg);
+}
+
+/* Dimmed page */
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-overlay);
+	background: rgba(0, 0, 0, 0.35);
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity var(--dur-menu) var(--ease-in-out),
+		visibility 0s linear var(--dur-menu);
+}
+
+.root[data-open] .overlay {
+	opacity: 1;
+	visibility: visible;
+	transition: opacity var(--dur-menu) var(--ease-in-out);
+}
+
+/* Drawer */
+.drawer {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: var(--z-drawer);
+	width: min(100vw, 36rem);
+	background: var(--color-ink);
+	color: #fff;
+	transform: translateX(calc(100% + 12vw));
+	visibility: hidden;
+	transition:
+		transform var(--dur-menu) var(--ease-in-out),
+		visibility 0s linear var(--dur-menu);
+}
+
+.root[data-open] .drawer {
+	transform: none;
+	visibility: visible;
+	transition: transform var(--dur-menu) var(--ease-in-out);
+}
+
+/* Bulging left edge that flattens as the drawer settles. */
+.curve {
+	position: absolute;
+	top: -10%;
+	bottom: -10%;
+	left: 1px;
+	width: 12vw;
+	transform: translateX(-100%) scaleX(1);
+	transform-origin: right center;
+	background: var(--color-ink);
+	border-radius: 100% 0 0 100% / 50% 0 0 50%;
+	transition: transform var(--dur-menu) var(--ease-in-out);
+}
+
+.root[data-open] .curve {
+	transform: translateX(-100%) scaleX(0);
+}
+
+.inner {
+	height: 100%;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 3rem;
+	padding: calc(var(--safe-top) + clamp(6rem, 16vh, 10rem)) calc(var(--safe-right) + clamp(1.5rem, 5vw, 5rem))
+		calc(var(--safe-bottom) + 2.5rem) clamp(1.5rem, 5vw, 5rem);
+}
+
+.heading {
+	font-size: var(--text-xs);
+	color: var(--color-muted-on-dark);
+	padding-bottom: 1.5rem;
+	margin-bottom: 1.5rem;
+	border-bottom: var(--hairline) solid var(--color-line-on-dark);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+.links li {
+	transform: translateX(4rem);
+	transition: transform var(--dur-menu) var(--ease-out);
+	transition-delay: calc(var(--i) * 40ms);
+}
+
+.root[data-open] .links li {
+	transform: none;
+}
+
+.links a {
+	position: relative;
+	display: flex;
+	align-items: center;
+	min-height: 44px;
+	font-size: clamp(2.5rem, 2rem + 2.6vw, 4rem);
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	/* Room for the active dot without pushing the text off the shared left edge. */
+	padding-left: 1.25rem;
+	margin-left: -1.25rem;
+}
+
+.dot {
+	position: absolute;
+	left: 0;
+	width: 0.6rem;
+	height: 0.6rem;
+	border-radius: 50%;
+	background: #fff;
+	transform: scale(0);
+	transition: transform var(--dur-button) var(--ease-out);
+}
+
+.links a:hover .dot,
+.links a:focus-visible .dot,
+.links a[aria-current='page'] .dot {
+	transform: scale(1);
+}
+
+.socials ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1.5rem;
+}
+
+.socials a {
+	display: inline-flex;
+	min-height: 44px;
+	align-items: center;
+}
+
+.socials a:hover {
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+@media (max-height: 30rem) {
+	.inner {
+		padding-top: calc(var(--safe-top) + 5rem);
+	}
+	.links a {
+		font-size: 2rem;
+	}
+}

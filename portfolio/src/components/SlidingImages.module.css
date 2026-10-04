@@ -1,0 +1,64 @@
+.root {
+	display: grid;
+	gap: 3vw;
+	padding-block: var(--section-y) calc(var(--section-y) * 0.6);
+	/* clip (not hidden) so this is not a scroll container and view() timelines track the page. */
+	overflow: clip;
+	view-timeline: --slide block;
+}
+
+.row {
+	display: flex;
+	gap: 3vw;
+	width: 112vw;
+}
+
+.row:nth-child(2) {
+	margin-left: -12vw;
+}
+
+.tile {
+	flex: 1 1 0;
+	display: grid;
+	place-items: center;
+	aspect-ratio: 1.3;
+	overflow: hidden;
+}
+
+.tile img {
+	width: 72%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.row {
+			animation: slide-left linear both;
+			animation-timeline: --slide;
+			animation-range: cover 0% cover 100%;
+		}
+		.row:nth-child(2) {
+			animation-name: slide-right;
+		}
+	}
+}
+
+@keyframes slide-left {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-10%);
+	}
+}
+
+@keyframes slide-right {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(10%);
+	}
+}

@@ -1,0 +1,121 @@
+.form {
+	display: grid;
+}
+
+.notice {
+	padding: 1rem 1.25rem;
+	margin-bottom: 2rem;
+	border: var(--hairline) solid var(--color-line-on-dark);
+	border-left: 3px solid #ffd666;
+	font-size: var(--text-sm);
+}
+
+.notice a {
+	text-decoration: underline;
+}
+
+.required {
+	font-size: var(--text-xs);
+	color: var(--color-muted-on-dark);
+	margin-bottom: 1rem;
+}
+
+.field {
+	display: grid;
+	grid-template-columns: 3.5rem 1fr;
+	align-items: start;
+	column-gap: 1rem;
+	padding-block: 2.25rem 2rem;
+	border-top: var(--hairline) solid var(--color-line-on-dark);
+}
+
+.number {
+	grid-row: span 3;
+	font-size: var(--text-sm);
+	color: var(--color-muted-on-dark);
+	padding-top: 0.35rem;
+}
+
+.label {
+	font-size: var(--text-xl);
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+	margin-bottom: 0.75rem;
+}
+
+.field input,
+.field textarea {
+	width: 100%;
+	min-height: 44px;
+	padding: 0.5rem 0;
+	border: 0;
+	border-bottom: var(--hairline) solid transparent;
+	background: transparent;
+	color: #fff;
+	font-size: var(--text-lg);
+	resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+	color: var(--color-muted-on-dark);
+	opacity: 1;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+	outline: none;
+	border-bottom-color: #fff;
+}
+
+.field[data-invalid] input,
+.field[data-invalid] textarea {
+	border-bottom-color: var(--color-error-on-dark);
+}
+
+.error {
+	margin-top: 0.5rem;
+	color: var(--color-error-on-dark);
+	font-size: var(--text-sm);
+}
+
+.honeypot {
+	position: absolute;
+	left: -10000px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.actions {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 2rem;
+	padding-top: 3rem;
+	border-top: var(--hairline) solid var(--color-line-on-dark);
+}
+
+.status {
+	flex: 1 1 16rem;
+	min-height: 1.5rem;
+	font-size: var(--text-base);
+}
+
+.success {
+	color: var(--color-success-on-dark);
+}
+
+.failure {
+	color: var(--color-error-on-dark);
+}
+
+@media (max-width: 47.99rem) {
+	.field {
+		grid-template-columns: 2.25rem 1fr;
+	}
+	.label {
+		font-size: var(--text-lg);
+	}
+}

@@ -1,0 +1,105 @@
+.split {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+	gap: clamp(2rem, 7vw, 8rem);
+	align-items: start;
+}
+
+.text {
+	display: grid;
+	gap: 1.5rem;
+	max-width: 26rem;
+	padding-top: clamp(0rem, 6vw, 6rem);
+	font-size: var(--text-base);
+}
+
+.arrow {
+	width: 1.75rem;
+	height: 1.75rem;
+	margin-bottom: 1.5rem;
+}
+
+.portrait {
+	position: relative;
+	background: var(--color-hero);
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+}
+
+.portrait img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center bottom;
+}
+
+.portrait figcaption {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	padding: 0.35rem 0.8rem;
+	border-radius: var(--radius-pill);
+	background: rgba(28, 29, 32, 0.6);
+	color: #fff;
+	font-size: var(--text-xs);
+}
+
+.services {
+	padding-bottom: var(--section-y);
+}
+
+.servicesHeading {
+	font-size: var(--text-2xl);
+	font-weight: 400;
+	letter-spacing: -0.02em;
+	line-height: 1.1;
+	margin-bottom: clamp(2.5rem, 6vw, 5rem);
+}
+
+.serviceList {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 3rem clamp(2rem, 5vw, 5rem);
+}
+
+.serviceList li {
+	display: grid;
+	gap: 1.25rem;
+	align-content: start;
+}
+
+.serviceList li > span {
+	padding-bottom: 1.25rem;
+	border-bottom: var(--hairline) solid var(--color-line);
+}
+
+.serviceList h3 {
+	font-size: var(--text-xl);
+	font-weight: 400;
+	letter-spacing: -0.01em;
+}
+
+.cta {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: clamp(3rem, 7vw, 6rem);
+}
+
+@media (max-width: 63.99rem) {
+	.serviceList {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 47.99rem) {
+	.split {
+		grid-template-columns: 1fr;
+	}
+	.text {
+		padding-top: 0;
+		max-width: none;
+	}
+}

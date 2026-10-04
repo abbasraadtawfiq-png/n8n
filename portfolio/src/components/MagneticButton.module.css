@@ -1,0 +1,132 @@
+.host {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: none;
+	color: inherit;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.host:focus-visible {
+	outline: none;
+}
+
+.host:focus-visible .surface {
+	outline: 2px solid var(--color-focus);
+	outline-offset: 4px;
+}
+
+.surface {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border-radius: var(--radius-pill);
+	isolation: isolate;
+	will-change: transform;
+	transition:
+		color var(--dur-button) var(--ease-out),
+		border-color var(--dur-button) var(--ease-out);
+}
+
+.label {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	white-space: nowrap;
+}
+
+/* Fill rises from below on hover/focus, then settles. */
+.fill {
+	position: absolute;
+	left: -25%;
+	top: 100%;
+	width: 150%;
+	height: 200%;
+	border-radius: 50%;
+	background: var(--color-accent);
+	transition: top var(--dur-button) var(--ease-out);
+	z-index: 0;
+}
+
+.host:hover .fill,
+.host:focus-visible .fill {
+	top: -50%;
+}
+
+.host[aria-disabled='true'],
+.host:disabled {
+	cursor: not-allowed;
+}
+
+.host:disabled .fill {
+	display: none;
+}
+
+/* Shapes */
+.circle {
+	width: var(--cta-size);
+	height: var(--cta-size);
+	font-size: var(--text-base);
+}
+
+.pill {
+	min-height: 3.5rem;
+	font-size: var(--text-base);
+}
+
+.pill .surface {
+	padding: 1rem 2.25rem;
+}
+
+/* Variants */
+.dark .surface {
+	background: var(--color-ink);
+	color: #fff;
+}
+
+.accent .surface {
+	background: var(--color-accent);
+	color: #fff;
+}
+
+.accent .fill {
+	background: var(--color-accent-strong);
+}
+
+.outline .surface {
+	border: var(--hairline) solid var(--color-line);
+	color: var(--color-ink);
+}
+
+.outline:hover .surface,
+.outline:focus-visible .surface {
+	color: #fff;
+	border-color: var(--color-accent);
+}
+
+.outline-dark .surface {
+	border: var(--hairline) solid var(--color-line-on-dark);
+	color: #fff;
+}
+
+.outline-dark:hover .surface,
+.outline-dark:focus-visible .surface {
+	border-color: var(--color-accent);
+}
+
+@media (hover: none) {
+	.host:hover .fill {
+		top: 100%;
+	}
+	.outline:hover .surface {
+		color: var(--color-ink);
+		border-color: var(--color-line);
+	}
+}

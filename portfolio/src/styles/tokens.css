@@ -1,0 +1,70 @@
+/*
+ * Design tokens. Values approximate the reference composition (see
+ * docs/reference-audit.md) and are tuned for WCAG AA contrast.
+ */
+:root {
+	/* Colour */
+	--color-bg: #f5f5f3;
+	--color-surface: #ffffff;
+	--color-ink: #1c1d20;
+	--color-ink-soft: #2c2d31;
+	--color-muted: #64666b;
+	--color-hero: #737679;
+	--color-media: #e9eaeb;
+	--color-accent: #455ce9;
+	--color-accent-strong: #334bd3;
+	--color-on-dark: #ffffff;
+	--color-muted-on-dark: #9a9b9f;
+	--color-line: rgba(28, 29, 32, 0.18);
+	--color-line-on-dark: rgba(255, 255, 255, 0.2);
+	--color-focus: #455ce9;
+	--color-error: #b3261e;
+	--color-error-on-dark: #ff8a80;
+	--color-success-on-dark: #8fe3a8;
+
+	/* Type */
+	--font-stack:
+		var(--font-sans), var(--font-arabic), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--text-xs: 0.8125rem;
+	--text-sm: 0.9375rem;
+	--text-base: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+	--text-lg: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
+	--text-xl: clamp(1.6rem, 1.2rem + 1.6vw, 2.6rem);
+	--text-2xl: clamp(2.25rem, 1.4rem + 3.6vw, 4.75rem);
+	--text-display: clamp(2.75rem, 1.2rem + 6.4vw, 7.5rem);
+	--text-hero: clamp(6.5rem, 17vw, 18rem);
+	--leading-tight: 1.02;
+	--leading-snug: 1.2;
+	--leading-body: 1.55;
+	--tracking-display: -0.035em;
+
+	/* Space & layout */
+	--gutter: clamp(1rem, 5vw, 6rem);
+	--section-y: clamp(5rem, 14vh, 11rem);
+	--content-max: 110rem;
+	--header-h: clamp(4.5rem, 7vw, 6.5rem);
+	--radius-pill: 999px;
+	--cta-size: clamp(8.5rem, 12vw, 11.5rem);
+	--menu-button: clamp(3.75rem, 5.4vw, 5rem);
+	--hairline: 1px;
+
+	/* Motion */
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+	--dur-hover: 200ms;
+	--dur-button: 400ms;
+	--dur-menu: 600ms;
+	--dur-reveal: 650ms;
+
+	/* Safe areas */
+	--safe-top: env(safe-area-inset-top, 0px);
+	--safe-right: env(safe-area-inset-right, 0px);
+	--safe-bottom: env(safe-area-inset-bottom, 0px);
+	--safe-left: env(safe-area-inset-left, 0px);
+
+	--z-header: 30;
+	--z-overlay: 40;
+	--z-drawer: 50;
+	--z-menu-button: 60;
+	--z-preview: 20;
+}

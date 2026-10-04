@@ -1,0 +1,120 @@
+.top {
+	position: absolute;
+	inset: 0 0 auto 0;
+	z-index: var(--z-header);
+}
+
+.banner {
+	padding: 0.5rem max(var(--gutter), var(--safe-left));
+	padding-top: calc(0.5rem + var(--safe-top));
+	background: #ffe9a8;
+	color: var(--color-ink);
+	font-size: var(--text-xs);
+	line-height: 1.35;
+	text-align: center;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	min-height: var(--header-h);
+	padding: clamp(1rem, 2.4vw, 2rem) max(var(--gutter), var(--safe-right)) 0
+		max(var(--gutter), var(--safe-left));
+	color: var(--color-ink);
+}
+
+.header[data-theme='light'] {
+	color: #fff;
+}
+
+.header[data-theme='light'] :focus-visible {
+	outline-color: #fff;
+}
+
+/* Wordmark: © rotates on hover, the prefix slides away. */
+.brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	min-height: 44px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.copyright {
+	display: inline-block;
+	transition: transform 0.6s var(--ease-out);
+}
+
+.brand:hover .copyright,
+.brand:focus-visible .copyright {
+	transform: rotate(360deg);
+}
+
+.brandText {
+	display: inline-block;
+	transition: transform var(--dur-button) var(--ease-out);
+}
+
+.brandPrefix {
+	display: inline-block;
+	transition: opacity var(--dur-button) var(--ease-out);
+}
+
+.nav ul {
+	display: flex;
+	gap: clamp(1.25rem, 3vw, 2.75rem);
+}
+
+.nav a {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	padding-inline: 0.15rem;
+}
+
+.dot {
+	position: absolute;
+	left: 50%;
+	bottom: 0.2rem;
+	width: 0.35rem;
+	height: 0.35rem;
+	margin-left: -0.175rem;
+	border-radius: 50%;
+	background: currentColor;
+	transform: scale(0);
+	transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.nav a:hover .dot,
+.nav a:focus-visible .dot,
+.nav a[aria-current='page'] .dot {
+	transform: scale(1);
+}
+
+.menuButton {
+	display: none;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 44px;
+	padding-inline: 0.25rem;
+}
+
+.menuDot {
+	width: 0.35rem;
+	height: 0.35rem;
+	border-radius: 50%;
+	background: currentColor;
+}
+
+@media (max-width: 47.99rem) {
+	.nav {
+		display: none;
+	}
+	.menuButton {
+		display: inline-flex;
+	}
+}

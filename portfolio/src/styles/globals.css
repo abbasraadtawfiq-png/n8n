@@ -1,0 +1,226 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+	scrollbar-gutter: stable;
+	background: var(--color-bg);
+}
+
+html[data-menu-open] {
+	overflow: hidden;
+}
+
+body {
+	margin: 0;
+	min-height: 100svh;
+	font-family: var(--font-stack);
+	font-size: var(--text-base);
+	line-height: var(--leading-body);
+	font-weight: 400;
+	color: var(--color-ink);
+	background: var(--color-bg);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure,
+blockquote,
+dl,
+dd {
+	margin: 0;
+}
+
+ul,
+ol {
+	padding: 0;
+	list-style: none;
+}
+
+img,
+video,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+	font: inherit;
+	color: inherit;
+}
+
+button {
+	cursor: pointer;
+	background: none;
+	border: 0;
+	padding: 0;
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-focus);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+.on-dark :focus-visible,
+[data-theme='dark'] :focus-visible {
+	outline-color: #ffffff;
+}
+
+::selection {
+	background: var(--color-accent);
+	color: #fff;
+}
+
+.visually-hidden {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.skip-link {
+	position: fixed;
+	left: calc(var(--safe-left) + 1rem);
+	top: calc(var(--safe-top) + 1rem);
+	z-index: 100;
+	padding: 0.75rem 1.25rem;
+	border-radius: var(--radius-pill);
+	background: var(--color-ink);
+	color: #fff;
+	transform: translateY(-200%);
+	transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+	transform: none;
+}
+
+.container {
+	width: 100%;
+	max-width: var(--content-max);
+	margin-inline: auto;
+	padding-inline: max(var(--gutter), var(--safe-left)) max(var(--gutter), var(--safe-right));
+}
+
+.label {
+	font-size: var(--text-xs);
+	letter-spacing: 0.02em;
+	color: var(--color-muted);
+}
+
+.on-dark .label {
+	color: var(--color-muted-on-dark);
+}
+
+/* Scroll reveal: content is visible by default and only hidden once the
+   reveal script has confirmed it can show it again. */
+html[data-reveal-ready] [data-reveal]:not([data-revealed]) {
+	opacity: 0;
+	transform: translateY(2.5rem);
+}
+
+[data-reveal] {
+	transition:
+		opacity var(--dur-reveal) var(--ease-out),
+		transform var(--dur-reveal) var(--ease-out);
+}
+
+/* Page transitions (React <ViewTransition>, progressive enhancement). */
+::view-transition {
+	pointer-events: none;
+}
+
+::view-transition-group(site-header),
+::view-transition-group(menu-button) {
+	animation: none;
+	z-index: 100;
+}
+
+::view-transition-old(site-header),
+::view-transition-old(menu-button) {
+	display: none;
+}
+
+::view-transition-new(site-header),
+::view-transition-new(menu-button) {
+	animation: none;
+}
+
+::view-transition-old(.page-exit) {
+	animation: 450ms var(--ease-in-out) both page-out;
+}
+
+::view-transition-new(.page-enter) {
+	animation: 650ms var(--ease-in-out) both page-in;
+}
+
+@keyframes page-out {
+	to {
+		opacity: 0.4;
+		transform: translateY(-6vh);
+	}
+}
+
+@keyframes page-in {
+	from {
+		clip-path: inset(100% 0 0 0 round 50% 50% 0 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0 round 0 0 0 0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	html[data-reveal-ready] [data-reveal]:not([data-revealed]) {
+		opacity: 1;
+		transform: none;
+	}
+
+	::view-transition-old(*),
+	::view-transition-new(*),
+	::view-transition-group(*) {
+		animation-duration: 0s !important;
+		animation-delay: 0s !important;
+	}
+}
+
+html[data-motion='paused'] [data-autoplay-motion] {
+	animation-play-state: paused !important;
+}

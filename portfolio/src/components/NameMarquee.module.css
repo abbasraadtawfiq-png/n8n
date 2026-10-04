@@ -1,0 +1,29 @@
+.marquee {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	user-select: none;
+	pointer-events: none;
+}
+
+.track {
+	display: flex;
+	width: max-content;
+	will-change: transform;
+}
+
+.copy {
+	flex: none;
+	display: inline-flex;
+	align-items: baseline;
+	font-size: var(--text-hero);
+	line-height: 1.05;
+	font-weight: 400;
+	letter-spacing: -0.035em;
+	white-space: nowrap;
+	padding-right: 0.25em;
+}
+
+.dash {
+	padding-left: 0.25em;
+}
