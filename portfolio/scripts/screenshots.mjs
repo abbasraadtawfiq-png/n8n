@@ -19,6 +19,7 @@ const routes = [
 	['work', '/work'],
 	['work-grid', '/work?view=grid'],
 	['project', '/work/soft-matter'],
+	['project-3d', '/work/orbit-objects'],
 	['about', '/about'],
 	['contact', '/contact'],
 	['privacy', '/privacy'],
@@ -33,6 +34,8 @@ const problems = [];
 const browser = await chromium.launch();
 for (const [vpName, ctxOpts] of viewports) {
 	const context = await browser.newContext(ctxOpts);
+	// Skip the once-per-session intro so every capture shows the page itself.
+	await context.addInitScript(() => sessionStorage.setItem('preloaded', '1'));
 	const page = await context.newPage();
 	page.on('console', (m) => {
 		// The deliberate 404 route logs its own status; anything else is a problem.

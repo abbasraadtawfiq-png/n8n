@@ -22,10 +22,6 @@
 	letter-spacing: var(--tracking-display);
 }
 
-.heading > span:last-child {
-	display: block;
-}
-
 .avatar {
 	display: inline-block;
 	vertical-align: middle;

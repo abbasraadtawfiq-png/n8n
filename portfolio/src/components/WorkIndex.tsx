@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useState, type CSSProperties } from 'react';
 import type { Category } from '@/content/schema';
 import type { ProjectSummary } from '@/content/summary';
 import { strings } from '@/content/strings';
@@ -29,7 +30,11 @@ export function WorkIndex(props: Props) {
 	const category = props.categories.some((c) => c.category === requested) ? (requested as Category) : null;
 	const view: View = params.get('view') === 'grid' ? 'grid' : 'list';
 
+	// Results only animate after the visitor changes something, not on first load.
+	const [interacted, setInteracted] = useState(false);
+
 	const update = (next: { category?: Category | null; view?: View }) => {
+		setInteracted(true);
 		const search = new URLSearchParams(params.toString());
 		const c = next.category === undefined ? category : next.category;
 		const v = next.view ?? view;
@@ -41,7 +46,7 @@ export function WorkIndex(props: Props) {
 		router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
 	};
 
-	return <WorkIndexView {...props} category={category} view={view} onChange={update} />;
+	return <WorkIndexView {...props} category={category} view={view} onChange={update} animate={interacted} />;
 }
 
 /** Stateless rendering, also used as the static fallback before hydration. */
@@ -51,7 +56,9 @@ export function WorkIndexView({
 	category,
 	view,
 	onChange,
+	animate = false,
 }: Props & {
+	animate?: boolean;
 	category: Category | null;
 	view: View;
 	onChange?: (next: { category?: Category | null; view?: View }) => void;
@@ -110,24 +117,31 @@ export function WorkIndexView({
 				{strings.work.count(visible.length)}
 			</p>
 
-			{visible.length === 0 ? (
-				<div className={styles.empty}>
-					<p>{strings.work.empty}</p>
-					<button type="button" onClick={() => onChange?.({ category: null })}>
-						{strings.work.showAll}
-					</button>
-				</div>
-			) : view === 'grid' ? (
-				<ul className={styles.grid}>
-					{visible.map((p) => (
-						<li key={p.slug} data-category={p.category}>
-							<ProjectCard project={p} />
-						</li>
-					))}
-				</ul>
-			) : (
-				<ProjectList projects={visible} showHeader titleTag="h2" />
-			)}
+			{/* Re-keyed on every filter/view change so the results animate in (CSS only). */}
+			<div
+				key={`${view}-${category ?? 'all'}`}
+				className={styles.results}
+				data-animate={animate || undefined}
+			>
+				{visible.length === 0 ? (
+					<div className={styles.empty}>
+						<p>{strings.work.empty}</p>
+						<button type="button" onClick={() => onChange?.({ category: null })}>
+							{strings.work.showAll}
+						</button>
+					</div>
+				) : view === 'grid' ? (
+					<ul className={styles.grid}>
+						{visible.map((p, i) => (
+							<li key={p.slug} data-category={p.category} style={{ '--i': i } as CSSProperties}>
+								<ProjectCard project={p} />
+							</li>
+						))}
+					</ul>
+				) : (
+					<ProjectList projects={visible} showHeader titleTag="h2" />
+				)}
+			</div>
 		</div>
 	);
 }

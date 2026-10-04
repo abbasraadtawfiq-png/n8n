@@ -36,3 +36,17 @@ export const indexingRequested =
 	process.env.SITE_INDEXING === 'allow' && siteOrigin !== null && !siteOrigin.isLocal;
 
 export const webVitalsEnabled = process.env.NEXT_PUBLIC_WEB_VITALS === 'true';
+
+/**
+ * Optional privacy-friendly analytics, off by default:
+ *  - "vercel": Vercel Web Analytics (cookieless, same-origin script).
+ *  - "plausible": Plausible (cookieless); set NEXT_PUBLIC_PLAUSIBLE_DOMAIN.
+ */
+export const analyticsProvider: 'vercel' | 'plausible' | null =
+	process.env.NEXT_PUBLIC_ANALYTICS === 'vercel'
+		? 'vercel'
+		: process.env.NEXT_PUBLIC_ANALYTICS === 'plausible' && process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN
+			? 'plausible'
+			: null;
+export const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN ?? '';
+export const plausibleSrc = process.env.NEXT_PUBLIC_PLAUSIBLE_SRC || 'https://plausible.io/js/script.js';

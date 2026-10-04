@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { portrait, portraitPlaceholder, site } from '@/content';
+import { getSite, portraitPlaceholder } from '@/content';
 import { strings } from '@/content/strings';
 import { ArrowIcon, GlobeIcon } from './Icons';
 import { MotionToggle } from './MotionToggle';
@@ -7,6 +7,8 @@ import { NameMarquee } from './NameMarquee';
 import styles from './Hero.module.css';
 
 export function Hero() {
+	const site = getSite();
+	const portrait = site.portrait;
 	const { city, country } = site.location;
 	return (
 		<section className={styles.hero} aria-labelledby="hero-title">
@@ -20,6 +22,7 @@ export function Hero() {
 							height={portrait.height}
 							sizes="(max-width: 48rem) 120vw, 60vw"
 							preload
+							fetchPriority="high"
 						/>
 					) : (
 						<figure className={styles.placeholder}>

@@ -1,63 +1,64 @@
 # Content guide
 
-Everything editable lives in `src/content/`. Components never contain your copy. Run `pnpm content:check` after every change — it validates the data, checks image files and dimensions, and rewrites `docs/asset-manifest.md`. A build fails loudly on invalid content.
+All copy and media are edited in the CMS at **`/keystatic`** (run `pnpm dev`, then open http://localhost:3000/keystatic). How the CMS works, where files are stored and how to edit from the live site: [`cms.md`](cms.md). Components never contain your copy.
 
-## 1. Name, role, bio, contact — `src/content/site.ts`
+After editing, run `pnpm content:check`. It validates the data and the files (existence, dimensions, alt text, https links, time zone) and rewrites `docs/asset-manifest.md`. A build fails loudly on invalid content.
+
+## 1. Identity: CMS → *Site identity*
 
 | Field | Notes |
 | --- | --- |
-| `name` | Replace `PLACEHOLDER_NAME` with your real name (string). Used in the `<h1>`, marquee, titles, footer, share image. |
-| `shortName` | Shown in the header wordmark ("© Design by …"), e.g. your first name. |
-| `role`, `roleLines` | Already "Graphic Designer & 3D Artist"; `roleLines` is how it breaks in the hero. |
-| `location` | City, country and IANA time zone (footer clock). |
-| `email`, `phone` | `null` hides them. When set they become real `mailto:`/`tel:` links in the footer and on Contact. |
-| `availability` | Reserved; not shown until you decide how it should read. |
-| `socialProfiles` | `[{ label: 'Instagram', href: 'https://…' }]` — https only, shown in footer, menu and Contact. |
-| `statement`, `intro`, `bio`, `services` | Your copy. Remove the placeholder sentence from `bio` (the launch check looks for it). |
-| `edition` | Year shown in the footer. |
-| `seo.description` | Default meta description (≤ 170 chars). |
+| Full name | Replace "Your Name". Used in the `<h1>`, marquee, titles, footer and share image. |
+| Short name | Header wordmark ("© Design by …"), e.g. your first name. |
+| Role, hero role lines | Already "Graphic Designer & 3D Artist"; the two lines control how the hero breaks. |
+| City, country, time zone | The footer clock uses the IANA time zone (e.g. `Asia/Baghdad`). |
+| Email, phone | Empty hides them. When set they become real `mailto:`/`tel:` links in the footer and on Contact. |
+| Availability | Optional line; empty hides it. |
+| Social profiles | Label + https URL; shown in the footer, menu and Contact. |
+| Portrait | Cut-out (transparent PNG/WebP) or on a gray close to `#737679`, at least **1600 × 2000 px**, subject touching the bottom edge. Hero, About and the avatars switch automatically, and the hero image becomes the preloaded LCP image. |
+| Statement, intro, bio, services | Your copy. Remove the placeholder sentence from the bio (the launch check looks for it). |
+| Footer year, default description | Description ≤ 170 characters. |
 
-Arabic text is supported anywhere: the Arabic font loads automatically when Arabic characters appear.
+## 2. Add a project
 
-## 2. Portrait
+**Fastest:** `pnpm project:add <folder> --title "Name" --category 3d`. This imports images, videos and `.glb` models as a draft (details in [`cms.md`](cms.md)); then finish it in the CMS.
 
-1. Export a cut-out portrait (transparent PNG or WebP, or a photo on a gray close to `#737679`), at least **1600 × 2000 px**, subject centred and touching the bottom edge.
-2. Save it as `public/media/portrait/portrait.webp` (keep the master PSD elsewhere — not in `public/`).
-3. Add it to `src/content/assets.ts`:
-   ```ts
-   portrait: { src: '/media/portrait/portrait.webp', type: 'image', mime: 'image/webp', width: 1600, height: 2000,
-     alt: '', source: 'owner-supplied', permission: 'Owned by me' },
-   ```
-4. Set `portrait: 'portrait'` in `site.ts`. Hero, About and the footer/contact avatar switch automatically and the hero image becomes the preloaded LCP image.
+**In the CMS:** *Projects → Add*:
 
-## 3. Add a project
+- **Title / URL slug**: the slug becomes `/work/<slug>`. Don't rename it after launch.
+- **Status**: *Published* for real work, *Draft* to hide, *Sample* only for preview placeholders.
+- **Category**: Graphic Design, 3D or Art Direction. Filters appear only for categories that have projects.
+- **Show on the home page**: the first 6 featured projects by *Display order* appear there.
+- **Cover** + alt text + **thumbnail focus** (the % crop centre for list and grid thumbnails).
+- **Gallery blocks**: Image, Video, Before/after, 3D model, each Full or Half width.
+- **Client, year, location, credits, tools, verified results, external link**: fill only what is true and approved; empty fields are not shown.
+- **SEO title / description**: unique per project. The **social image** is optional (1200 × 630); the cover is used otherwise.
+- **Media source / permission note**: record that you own the work or the client approved public use.
 
-1. Create `public/media/projects/<slug>/` and add:
-   - `cover.jpg` (or `.webp`) — any aspect ratio; ~2400 px wide is plenty.
-   - `social.jpg` — exactly **1200 × 630** (share image).
-   - gallery files in their **original aspect ratios** (they are never cropped on the detail page).
-   - optional video: `loop.mp4` (H.264) + `loop.webm` (VP9/AV1) + `loop-poster.jpg`.
-2. Register each file in `src/content/assets.ts` with its real `width`/`height`, meaningful `alt` text, `source: 'owner-supplied'` and a `permission` note (e.g. "Client approved public use, 2026"). For videos add `alternates` and `poster`.
-3. Add an entry to `src/content/projects.ts` (copy an existing one):
-   - `slug` — lowercase-hyphenated; becomes `/work/<slug>`. Don't rename after launch (or add a redirect).
-   - `publishStatus: 'published'` for real work (`'draft'` hides it entirely).
-   - `category` — `graphic-design`, `3d` or `art-direction`. Filters only appear for categories that have projects.
-   - `featured: true` puts it on the home page (first 6 by `displayOrder`).
-   - `client`, `year`, `location`, `credits`, `tools`, `verifiedResults`, `externalLink` — fill only what is true and approved; empty fields are simply not shown.
-   - `cover.focalPoint` — percentage crop centre for thumbnails.
-   - `media[]` — `layout: 'half'` pairs two items side by side; videos take `purpose: 'decorative'` (silent loop) or `'meaningful'` (controls, no autoplay — add captions/transcript if there is speech).
-   - `seoTitle`, `seoDescription` — unique per project.
-4. Delete the sample projects and their `public/media/projects/<sample>/` folders and asset entries.
-5. `pnpm content:check && pnpm build`.
+Before launch, delete the six sample projects (CMS → Projects → each sample → Delete), then run `pnpm content:check`. It warns about any media file that is no longer used, so you can remove leftovers.
 
-## 4. Replace media without changing layouts
+## 3. Media guidelines
 
-Overwrite the file **and update its `width`/`height` in `assets.ts`** (the check fails on mismatches). Prefer new filenames when replacing published media so browsers and CDNs don't keep the old file (media is cached for a day).
+| Kind | Format | Notes |
+| --- | --- | --- |
+| Images | JPG/WebP/PNG, ~2400 px wide | Next.js serves resized AVIF/WebP automatically. They are never cropped on the project page. |
+| Video | MP4 (H.264) + WebM, poster JPG | Use `pnpm media:video` or `project:add` to produce all three. Silent loops are best under ~8 MB. |
+| Before/after | Two images of identical size | The check fails if their aspect ratios differ. |
+| 3D | `.glb` (binary glTF), ideally < 10 MB, Draco/meshopt compressed | Plus a poster render. Loaded only on request. |
 
-## 5. Interface text
+When replacing published media, prefer new file names so browsers and CDNs don't keep the old file (media is cached for a day).
 
-All UI strings (navigation, buttons, form questions, errors) are in `src/content/strings.ts` — change wording there. To add Arabic later, add a second dictionary with the same shape and route-level `lang`/`dir`; nothing in components needs rewriting.
+## 4. Interface text
 
-## 6. SEO
+UI strings (navigation, buttons, form questions, errors, the intro words) are in `src/content/strings.ts`. The site is English-only by decision; the Arabic font fallback still renders correctly if an Arabic name or word is entered.
 
-Titles and descriptions come from `site.ts` and each project's `seoTitle`/`seoDescription`. Indexing turns on only when **all** are true: `SITE_URL` is a real https origin, `SITE_INDEXING=allow`, the name is not the placeholder, and no `sample` projects remain. Structured data (Person/ProfilePage, CreativeWork, BreadcrumbList) is emitted automatically under the same conditions, using only confirmed fields.
+## 5. SEO
+
+Titles and descriptions come from *Site identity* and each project's SEO fields. Indexing turns on only when **all** of these are true:
+
+- `SITE_URL` is a real https origin.
+- `SITE_INDEXING=allow`.
+- The name is not the placeholder.
+- No sample projects remain.
+
+Structured data (Person/ProfilePage, CreativeWork, BreadcrumbList) is emitted automatically under the same conditions, using only confirmed fields.

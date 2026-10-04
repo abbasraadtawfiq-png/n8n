@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { absoluteUrl, siteIndexable } from '@/lib/seo';
+import { absoluteUrl, isSiteIndexable } from '@/lib/seo';
 
 /**
  * Crawling stays allowed even in preview so crawlers can see each page's
@@ -9,6 +9,6 @@ import { absoluteUrl, siteIndexable } from '@/lib/seo';
 export default function robots(): MetadataRoute.Robots {
 	return {
 		rules: { userAgent: '*', allow: '/', disallow: ['/api/'] },
-		...(siteIndexable ? { sitemap: absoluteUrl('/sitemap.xml') } : {}),
+		...(isSiteIndexable() ? { sitemap: absoluteUrl('/sitemap.xml') } : {}),
 	};
 }

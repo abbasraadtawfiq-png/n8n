@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 test.describe('work and projects', () => {
 	test('category filters show the right projects and persist in the URL', async ({ page }) => {

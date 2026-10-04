@@ -1,13 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { portrait, site } from '@/content';
+import { getSite } from '@/content';
 import { strings } from '@/content/strings';
 import { ArrowIcon } from './Icons';
 import { LocalTime } from './LocalTime';
 import { MagneticAnchor, MagneticLink } from './MagneticButton';
+import { SplitText } from './SplitText';
 import styles from './SiteFooter.module.css';
 
 export function Avatar({ className }: { className?: string }) {
+	const portrait = getSite().portrait;
 	return (
 		<span className={[styles.avatar, className].filter(Boolean).join(' ')} aria-hidden="true">
 			{portrait ? (
@@ -21,6 +23,7 @@ export function Avatar({ className }: { className?: string }) {
 
 /** Bottom bar shared by the footer and the dark Contact page. */
 export function FooterBar() {
+	const site = getSite();
 	return (
 		<div className={styles.bar}>
 			<div className={styles.barGroup}>
@@ -64,6 +67,7 @@ export function FooterBar() {
 }
 
 export function ContactPills() {
+	const site = getSite();
 	if (!site.email && !site.phone) return null;
 	return (
 		<div className={styles.pills}>
@@ -86,14 +90,7 @@ export function SiteFooter() {
 		<footer className={`${styles.footer} on-dark`} data-menu-inert="">
 			<div className="container">
 				<div className={styles.top}>
-					<h2 className={styles.heading}>
-						<Avatar />
-						<span>
-							{strings.footer.heading[0]}
-							<br />
-							{strings.footer.heading[1]}
-						</span>
-					</h2>
+					<SplitText as="h2" className={styles.heading} prefix={<Avatar />} text={strings.footer.heading} />
 					<ArrowIcon direction="down-left" className={styles.arrow} />
 				</div>
 				<div className={styles.line}>

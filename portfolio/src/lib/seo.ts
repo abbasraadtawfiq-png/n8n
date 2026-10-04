@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import { hasSampleProjects, isPlaceholderIdentity, site, type Project } from '@/content';
+import { getContentFlags, getSite, type Project } from '@/content';
 import { indexingRequested, siteOrigin } from './config';
 
 /** Whole-site indexability: real origin + explicit opt-in + no placeholder identity or samples. */
-export const siteIndexable = indexingRequested && !isPlaceholderIdentity && !hasSampleProjects;
-
-export const isPreview = !siteIndexable;
+export function isSiteIndexable(): boolean {
+	const { isPlaceholderIdentity, hasSampleProjects } = getContentFlags();
+	return indexingRequested && !isPlaceholderIdentity && !hasSampleProjects;
+}
 
 export function absoluteUrl(path: string): string | undefined {
 	return siteOrigin ? new URL(path, siteOrigin.origin).toString() : undefined;
@@ -21,7 +22,7 @@ interface PageMetaInput {
 	type?: 'website' | 'article' | 'profile';
 }
 
-const brandTitle = `${site.name} — ${site.role}`;
+const brandTitle = () => `${getSite().name} — ${getSite().role}`;
 
 export function pageMetadata({
 	title,
@@ -31,9 +32,10 @@ export function pageMetadata({
 	noindex,
 	type = 'website',
 }: PageMetaInput): Metadata {
-	const indexable = siteIndexable && !noindex;
+	const site = getSite();
+	const indexable = isSiteIndexable() && !noindex;
 	const canonical = absoluteUrl(path);
-	const fullTitle = title ? `${title} — ${site.name}` : brandTitle;
+	const fullTitle = title ? `${title} — ${site.name}` : brandTitle();
 	// Without a validated origin, absolute URLs cannot be formed honestly, so
 	// canonical and Open Graph image URLs are omitted rather than faked.
 	const ogImage =
@@ -59,7 +61,7 @@ export function pageMetadata({
 	};
 }
 
-export const defaultOgImage = { src: '/og-default.png', width: 1200, height: 630, alt: brandTitle };
+export const defaultOgImage = () => ({ src: '/og-default.png', width: 1200, height: 630, alt: brandTitle() });
 
 /** Serialise JSON-LD safely for embedding in a <script> element. */
 export function serializeJsonLd(data: unknown): string {
@@ -73,7 +75,8 @@ export function serializeJsonLd(data: unknown): string {
 
 /** Person + ProfilePage, only with confirmed identity on an indexable site. */
 export function personJsonLd(): object | null {
-	if (!siteIndexable || !siteOrigin) return null;
+	if (!isSiteIndexable() || !siteOrigin) return null;
+	const site = getSite();
 	const sameAs = site.socialProfiles.map((s) => s.href);
 	return {
 		'@context': 'https://schema.org',
@@ -96,7 +99,7 @@ export function personJsonLd(): object | null {
 
 /** CreativeWork + BreadcrumbList for a published project; null for samples. */
 export function projectJsonLd(project: Project, imageSrc: string): object[] | null {
-	if (!siteIndexable || project.publishStatus !== 'published') return null;
+	if (!isSiteIndexable() || project.publishStatus !== 'published') return null;
 	const url = absoluteUrl(`/work/${project.slug}`);
 	return [
 		{
@@ -106,7 +109,7 @@ export function projectJsonLd(project: Project, imageSrc: string): object[] | nu
 			description: project.shortDescription,
 			url,
 			image: absoluteUrl(imageSrc),
-			creator: { '@type': 'Person', name: site.name },
+			creator: { '@type': 'Person', name: getSite().name },
 			...(project.year ? { dateCreated: String(project.year) } : {}),
 			genre: project.category,
 		},

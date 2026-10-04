@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { parseSiteOrigin } from '@/lib/config';
-import { personJsonLd, projectJsonLd, serializeJsonLd, siteIndexable } from '@/lib/seo';
-import { projects } from '@/content';
+import { isSiteIndexable, personJsonLd, projectJsonLd, serializeJsonLd } from '@/lib/seo';
+import { getProjects } from '@/content';
 
 describe('parseSiteOrigin', () => {
 	it('accepts https origins and local http for testing', () => {
@@ -32,8 +32,8 @@ describe('structured data', () => {
 	});
 
 	it('publishes nothing while the site is a preview with sample content', () => {
-		expect(siteIndexable).toBe(false);
+		expect(isSiteIndexable()).toBe(false);
 		expect(personJsonLd()).toBeNull();
-		for (const p of projects) expect(projectJsonLd(p, '/x.jpg')).toBeNull();
+		for (const p of getProjects()) expect(projectJsonLd(p, '/x.jpg')).toBeNull();
 	});
 });

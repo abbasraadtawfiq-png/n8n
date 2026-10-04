@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { projects } from '@/content';
-import { absoluteUrl, siteIndexable } from '@/lib/seo';
+import { getProjects } from '@/content';
+import { absoluteUrl, isSiteIndexable } from '@/lib/seo';
 
 /**
  * Canonical, indexable pages only. While the site is a preview (no origin,
@@ -8,9 +8,9 @@ import { absoluteUrl, siteIndexable } from '@/lib/seo';
  * is intentionally empty. Sample and draft projects are never listed.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-	if (!siteIndexable) return [];
+	if (!isSiteIndexable()) return [];
 	const pages = ['/', '/work', '/about', '/contact'].map((path) => ({ url: absoluteUrl(path)! }));
-	const work = projects
+	const work = getProjects()
 		.filter((p) => p.publishStatus === 'published')
 		.map((p) => ({ url: absoluteUrl(`/work/${p.slug}`)! }));
 	return [...pages, ...work];

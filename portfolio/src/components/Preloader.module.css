@@ -1,0 +1,58 @@
+.preloader {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	display: none;
+	place-items: center;
+	background: var(--color-ink);
+	color: #fff;
+}
+
+:global(html[data-preload='run']) .preloader {
+	display: grid;
+}
+
+.preloader::after {
+	content: '';
+	position: absolute;
+	left: -10%;
+	bottom: -14vh;
+	width: 120%;
+	height: 28vh;
+	border-radius: 50%;
+	background: inherit;
+	transition: transform 0.8s var(--ease-in-out);
+}
+
+.preloader[data-leaving] {
+	transform: translateY(-120%);
+	transition: transform 0.8s var(--ease-in-out);
+}
+
+.preloader[data-leaving]::after {
+	transform: scaleY(0);
+}
+
+.word {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55em;
+	font-size: var(--text-2xl);
+	letter-spacing: -0.02em;
+	line-height: 1;
+	animation: word-in 0.4s var(--ease-out) both;
+}
+
+@keyframes word-in {
+	from {
+		opacity: 0;
+		transform: translateY(0.4em);
+	}
+}
+
+.dot {
+	width: 0.3em;
+	height: 0.3em;
+	border-radius: 50%;
+	background: #fff;
+}

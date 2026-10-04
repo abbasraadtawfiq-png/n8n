@@ -1,7 +1,7 @@
 /**
  * Interface copy, kept in one place so another language can be added later
- * without touching components. Project and identity copy live in site.ts and
- * projects.ts.
+ * without touching components. Project and identity copy are edited in the CMS
+ * (content/, see docs/cms.md).
  */
 export const strings = {
 	skipToContent: 'Skip to content',
@@ -103,6 +103,24 @@ export const strings = {
 		socials: 'Socials',
 		privacy: 'Privacy',
 	},
+	lightbox: {
+		label: 'Image viewer',
+		previous: 'Previous image',
+		next: 'Next image',
+		close: 'Close image viewer',
+		zoomIn: 'Zoom in to full resolution',
+		zoomOut: 'Fit image to screen',
+	},
+	compare: { slider: (label: string) => `Drag to compare: ${label}` },
+	model: {
+		view: 'View in 3D',
+		loading: 'Loading 3D model…',
+		error: 'The 3D model could not be loaded.',
+		retry: 'Try again',
+		hint: 'Drag to rotate · scroll or pinch to zoom',
+	},
+	curtain: { home: 'Home' },
+	preloader: ['Hello', 'Bonjour', 'Hola', 'Ciao', 'Hallo', 'Olá', 'Hej', 'Merhaba'],
 	notFound: { title: 'Page not found', body: 'This page doesn’t exist or has moved.', home: 'Back home' },
 	error: {
 		title: 'Something went wrong',

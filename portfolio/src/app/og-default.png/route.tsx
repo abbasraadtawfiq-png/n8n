@@ -1,10 +1,11 @@
 import { ImageResponse } from 'next/og';
-import { site } from '@/content';
+import { getSite } from '@/content';
 
 export const dynamic = 'force-static';
 
 /** Default 1200×630 sharing image, generated at build time from site identity. */
 export function GET() {
+	const site = getSite();
 	return new ImageResponse(
 		<div
 			style={{

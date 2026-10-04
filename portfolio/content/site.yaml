@@ -1,0 +1,26 @@
+name: Your Name
+shortName: Your Name
+role: Graphic Designer & 3D Artist
+roleLine1: Graphic Designer
+roleLine2: "& 3D Artist"
+city: Baghdad
+country: Iraq
+timeZone: Asia/Baghdad
+email: ""
+phone: ""
+availability: ""
+socialProfiles: []
+statement: Graphic design and 3D imagery for brands, products and ideas that deserve to be seen clearly.
+intro: I move between flat graphic systems and rendered three-dimensional images, choosing whichever tells the idea best.
+bio:
+  - Graphic designer and 3D artist based in Baghdad, Iraq.
+  - "This paragraph is a placeholder for your story: how you started, what you care about in a brief, and the kind of work you want more of."
+services:
+  - title: Graphic Design
+    description: Identities, posters, editorial layouts and the typographic systems that hold them together.
+  - title: 3D Art
+    description: Modelled, lit and rendered stills and short loops for products, campaigns and visual experiments.
+  - title: Art Direction
+    description: Shaping the look of a project from first references to final images, so every piece feels related.
+edition: "2026"
+seoDescription: Portfolio of a graphic designer and 3D artist based in Baghdad, Iraq — identities, posters and rendered 3D imagery.

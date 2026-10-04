@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 async function fill(page: Page, overrides: Partial<Record<'name' | 'email' | 'message', string>> = {}) {
 	await page.getByLabel('What’s your name?').fill(overrides.name ?? 'Ada Lovelace');

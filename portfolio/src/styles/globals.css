@@ -13,8 +13,27 @@ html {
 	background: var(--color-bg);
 }
 
-html[data-menu-open] {
+html[data-menu-open],
+html[data-lightbox-open] {
 	overflow: hidden;
+}
+
+/* Lenis smooth scrolling (see SmoothScroll.tsx). */
+html.lenis,
+html.lenis body {
+	height: auto;
+}
+
+.lenis.lenis-smooth {
+	scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+	overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+	overflow: clip;
 }
 
 body {
@@ -142,59 +161,45 @@ button {
 
 /* Scroll reveal: content is visible by default and only hidden once the
    reveal script has confirmed it can show it again. */
-html[data-reveal-ready] [data-reveal]:not([data-revealed]) {
+html[data-reveal-ready] [data-reveal]:not([data-reveal='split']):not([data-revealed]) {
 	opacity: 0;
 	transform: translateY(2.5rem);
 }
 
-[data-reveal] {
+[data-reveal]:not([data-reveal='split']) {
 	transition:
 		opacity var(--dur-reveal) var(--ease-out),
 		transform var(--dur-reveal) var(--ease-out);
 }
 
-/* Page transitions (React <ViewTransition>, progressive enhancement). */
-::view-transition {
-	pointer-events: none;
+/* Word-by-word headline reveal (SplitText). Hidden from first paint only
+   when JavaScript runs (html.js); a failsafe shows the words if the reveal
+   script never starts. */
+.split-mask {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: top;
+	padding-bottom: 0.14em;
+	margin-bottom: -0.14em;
 }
 
-::view-transition-group(site-header),
-::view-transition-group(menu-button) {
-	animation: none;
-	z-index: 100;
+.split-word {
+	display: inline-block;
+	transition: transform 0.9s var(--ease-out);
+	transition-delay: calc(var(--i, 0) * 35ms);
 }
 
-::view-transition-old(site-header),
-::view-transition-old(menu-button) {
-	display: none;
+html.js [data-reveal='split']:not([data-revealed]) .split-word {
+	transform: translateY(115%);
 }
 
-::view-transition-new(site-header),
-::view-transition-new(menu-button) {
-	animation: none;
+html.js:not([data-reveal-ready]) [data-reveal='split'] .split-word {
+	animation: split-failsafe 0s linear 3s forwards;
 }
 
-::view-transition-old(.page-exit) {
-	animation: 450ms var(--ease-in-out) both page-out;
-}
-
-::view-transition-new(.page-enter) {
-	animation: 650ms var(--ease-in-out) both page-in;
-}
-
-@keyframes page-out {
+@keyframes split-failsafe {
 	to {
-		opacity: 0.4;
-		transform: translateY(-6vh);
-	}
-}
-
-@keyframes page-in {
-	from {
-		clip-path: inset(100% 0 0 0 round 50% 50% 0 0);
-	}
-	to {
-		clip-path: inset(0 0 0 0 round 0 0 0 0);
+		transform: none;
 	}
 }
 
@@ -208,16 +213,10 @@ html[data-reveal-ready] [data-reveal]:not([data-revealed]) {
 		scroll-behavior: auto !important;
 	}
 
-	html[data-reveal-ready] [data-reveal]:not([data-revealed]) {
+	html[data-reveal-ready] [data-reveal]:not([data-revealed]),
+	html.js [data-reveal='split']:not([data-revealed]) .split-word {
 		opacity: 1;
 		transform: none;
-	}
-
-	::view-transition-old(*),
-	::view-transition-new(*),
-	::view-transition-group(*) {
-		animation-duration: 0s !important;
-		animation-delay: 0s !important;
 	}
 }
 

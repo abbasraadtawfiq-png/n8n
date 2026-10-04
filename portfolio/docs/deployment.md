@@ -11,7 +11,7 @@ Nothing has been deployed. No domain, DNS, hosting account or email provider was
 | Package manager | pnpm 10.12.1 (pinned via `packageManager`; `portfolio/pnpm-lock.yaml` is the only lockfile) |
 | Build | `pnpm install --frozen-lockfile && pnpm build` |
 | Start (self-hosted) | `pnpm start --port 3000` |
-| Rendering | All pages statically generated at build time; `/api/contact` and `/api/vitals` are server functions. **Not** a static export — the contact form needs a server. |
+| Rendering | All pages statically generated at build time from `content/` (CMS files); `/api/contact`, `/api/vitals` and the CMS routes (`/keystatic`, `/api/keystatic/*`) are server functions. **Not** a static export — the contact form needs a server. |
 
 ## Recommended host: Vercel
 
@@ -19,6 +19,8 @@ Nothing has been deployed. No domain, DNS, hosting account or email provider was
 2. Set environment variables (Production and Preview separately, see `.env.example`):
    - Preview: leave `SITE_URL`/`SITE_INDEXING` empty → every page `noindex`.
    - Production: `SITE_URL=https://yourdomain`, `SITE_INDEXING=allow` (only after content is real), `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`.
+   - CMS (optional, for editing from the live site): `NEXT_PUBLIC_KEYSTATIC_STORAGE=github`, `NEXT_PUBLIC_KEYSTATIC_REPO`, `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`, `NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` (see `cms.md`). Without them `/keystatic` returns 404 in production and the site builds normally. Each CMS save is a commit, which triggers a redeploy.
+   - Analytics (optional): `NEXT_PUBLIC_ANALYTICS=vercel` (enable Web Analytics in the Vercel project) or `plausible` with `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`. The CSP and the privacy page adapt automatically.
    - `CONTACT_IP_HEADER`: Vercel sets `x-forwarded-for` / `x-real-ip` for the client; keep the default and confirm on a preview deployment that a spoofed `x-forwarded-for` from the client does not change the rate-limit key.
 3. Public values are read at build time: redeploy after changing them.
 4. Add the domain in Vercel, then point DNS as Vercel instructs (your action).
@@ -43,7 +45,9 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e
 - [ ] `/work/unknown` → HTTP 404; direct loads of `/work/<slug>` → 200.
 - [ ] View source: canonical = `https://domain/…`, `og:image` absolute, JSON-LD present, `robots` = `index, follow`.
 - [ ] `/sitemap.xml` lists only published pages; `/robots.txt` references it.
-- [ ] Browser console: no CSP violations (the policy keeps `'unsafe-inline'` for Next's inline bootstrap scripts because pages are static; a nonce-based CSP would force dynamic rendering).
+- [ ] Browser console: no CSP violations. The policy keeps `'unsafe-inline'` for Next's inline bootstrap scripts because pages are static (a nonce-based CSP would force dynamic rendering). It also keeps `'wasm-unsafe-eval'`, which the 3D viewer's mesh decoder needs (it allows WebAssembly compilation only, not JS `eval`). `/keystatic` has its own policy adding `api.github.com`, GitHub avatars and Google Fonts.
+- [ ] Project page with a 3D block: "View in 3D" loads and rotates the model; the before/after slider works with arrow keys; images open in the lightbox.
+- [ ] CMS (if GitHub mode is configured): sign in at `/keystatic`, edit a project's caption, save → a commit appears on the branch → the redeploy shows the change.
 - [ ] Contact: send one message to an authorised test inbox; confirm the success message appears only after Resend accepts it, check the inbox (acceptance ≠ delivery), check SPF/DKIM pass, and that Reply-To is the visitor.
 - [ ] Rate limit: 6 quick submissions from one connection → the 6th shows the "try again" message.
 - [ ] HSTS: starts as `max-age=31536000` without `includeSubDomains`/`preload`; add those only once every subdomain is HTTPS.
@@ -59,4 +63,4 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e
 
 - Vercel: Deployments → pick the last good deployment → **Promote to Production** (instant, no rebuild). Previous deployments are kept automatically.
 - Self-hosted: deploy from git tags (`git tag release-YYYYMMDD`), keep the previous `.next` build directory, switch the process back and restart.
-- Content mistakes: revert the commit touching `src/content/` or `public/media/` and redeploy.
+- Content mistakes: revert the commit touching `content/` or `public/media/` (CMS saves are ordinary commits) and redeploy.

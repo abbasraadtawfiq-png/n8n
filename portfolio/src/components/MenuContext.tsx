@@ -61,7 +61,9 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 		html.dataset.menuOpen = '';
 		isolated.forEach((el) => (el.inert = true));
 		window.dispatchEvent(new Event('menu:open'));
+		window.dispatchEvent(new Event('scroll-lock'));
 		return () => {
+			window.dispatchEvent(new Event('scroll-unlock'));
 			delete html.dataset.menuOpen;
 			isolated.forEach((el) => (el.inert = false));
 		};

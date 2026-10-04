@@ -1,4 +1,4 @@
-import { CATEGORY_LABELS, getAsset, type Project } from './index';
+import { CATEGORY_LABELS, type Project } from './index';
 
 /** Serializable subset of a project for client components. */
 export interface ProjectSummary {
@@ -14,7 +14,6 @@ export interface ProjectSummary {
 }
 
 export function toSummary(p: Project): ProjectSummary {
-	const asset = getAsset(p.cover.asset);
 	return {
 		slug: p.slug,
 		title: p.title,
@@ -25,10 +24,10 @@ export function toSummary(p: Project): ProjectSummary {
 		sample: p.publishStatus === 'sample',
 		accentColor: p.accentColor,
 		cover: {
-			src: asset.src,
-			width: asset.width,
-			height: asset.height,
-			alt: p.cover.alt ?? asset.alt,
+			src: p.cover.src,
+			width: p.cover.width,
+			height: p.cover.height,
+			alt: p.cover.alt,
 			position: `${p.cover.focalPoint.x}% ${p.cover.focalPoint.y}%`,
 		},
 	};

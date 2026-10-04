@@ -1,6 +1,6 @@
 # QA report
 
-**Date:** 2026-10-04 · **Environment:** cloud Linux container, Node 22.22.0, pnpm 10.12.1, Playwright 1.56.1 with Chromium build 1194 (headless), Lighthouse 13.5.0 · **Build:** Next.js 16.3.8 production build (`pnpm build`, served by `pnpm start`), repo base commit `f30cc7b`.
+**Date:** 2026-10-04 (updated after the CMS and motion/media features) · **Environment:** cloud Linux container, Node 22.22.0, pnpm 10.12.1, Playwright 1.56.1 with Chromium build 1194 (headless), Lighthouse 13.5.0 · **Build:** Next.js 16.3.8 production build (`pnpm build`, served by `pnpm start`), repo base commit `f30cc7b`.
 
 Status legend: **PASS** run here and passed · **FAIL** run here and failed · **NOT RUN** not possible here (reason given) · **PENDING** needs external setup.
 
@@ -9,12 +9,12 @@ Status legend: **PASS** run here and passed · **FAIL** run here and failed · *
 | Command | Expected | Actual | Status | Evidence |
 | --- | --- | --- | --- | --- |
 | `pnpm install --frozen-lockfile` | Installs from lockfile | Installed (pnpm 10.12.1) | PASS | `pnpm-lock.yaml` |
-| `pnpm content:check` | 0 errors | 6 projects, 31 assets, 0 errors, 0 warnings | PASS | `docs/asset-manifest.md` |
+| `pnpm content:check` | 0 errors | 6 projects, 35 media files, 0 errors, 0 warnings | PASS | `docs/asset-manifest.md` |
 | `pnpm check:launch` | Fails while preview | 9 errors (placeholder name/portrait/bio, 6 samples, no published projects, placeholder assets, no `SITE_URL`, indexing off, no contact route) | PASS (fails as designed) | console |
 | `pnpm lint` | 0 problems | 0 errors, 0 warnings | PASS | — |
 | `pnpm typecheck` | 0 errors | 0 errors | PASS | — |
-| `pnpm test` (Vitest) | All pass | 33 / 33 passed (contact handler incl. mocked provider acceptance/failure, origin, size, honeypot, rate limit, fail-closed limiter, no message logging; Resend payload; client/server validation parity; content validation; SEO helpers) | PASS | `docs/qa/unit-results.txt` |
-| `pnpm build` | Success | 20 static routes + 2 server functions | PASS | — |
+| `pnpm test` (Vitest) | All pass | 33 / 33 passed (contact handler incl. mocked provider acceptance/failure, origin, size, honeypot, rate limit, fail-closed limiter, no message logging; Resend payload; client/server validation parity; CMS content loader incl. parity with Keystatic's own reader and error fixtures; SEO helpers) | PASS | `docs/qa/unit-results.txt` |
+| `pnpm build` | Success | 20 static routes + server functions (contact, vitals, CMS) | PASS | — |
 | Route status (`curl`) | 200 / real 404 | `/ /work /work/<slug> /about /contact /privacy /robots.txt /sitemap.xml /og-default.png` → 200; `/work/does-not-exist` → **404**; `GET /api/contact` → 405 | PASS | `docs/qa/headers.txt` |
 | Response headers | Security + cache headers | CSP, nosniff, Referrer-Policy, X-Frame-Options DENY, COOP, Permissions-Policy, `X-Robots-Tag: noindex` (preview); chunks `immutable`; media `max-age=86400, swr` | PASS (local `next start` only) | `docs/qa/headers.txt` |
 | `pnpm audit --prod` | No known vulns | No known vulnerabilities | PASS | — |
@@ -22,7 +22,7 @@ Status legend: **PASS** run here and passed · **FAIL** run here and failed · *
 
 ## End-to-end (Playwright, production server)
 
-`pnpm test:e2e --project=chromium --project=mobile-chrome` → **72 passed, 0 failed, 6 skipped** (skips are viewport-specific tests by design, e.g. desktop-only hover on the mobile project). Evidence: `docs/qa/e2e-results.txt`.
+`pnpm test:e2e --project=chromium --project=mobile-chrome` → **92 passed, 0 failed, 8 skipped** (skips are viewport-specific tests by design, e.g. desktop-only hover or the 3D viewer test on the mobile project). Evidence: `docs/qa/e2e-results.txt`.
 
 | # | Scenario | Result |
 | --- | --- | --- |
@@ -41,9 +41,17 @@ Status legend: **PASS** run here and passed · **FAIL** run here and failed · *
 | 12 | No secret names, Resend endpoint or key-shaped strings in HTML/JS | PASS |
 | 13 | Axe (WCAG 2.0/2.1/2.2 A+AA tags): zero serious/critical on 7 routes, desktop and mobile | PASS |
 | 14 | JavaScript disabled: hero, statement, full project list, project navigation, About content | PASS |
+| 15 | Page curtain: covers with the destination name, navigates, lifts; skipped for modified clicks, same page and reduced motion | PASS |
+| 16 | Intro preloader: plays once per tab session, never with reduced motion, absent without JS | PASS |
+| 17 | Headline word reveal ends visible; words are plain text in the HTML | PASS |
+| 18 | Lightbox: open, arrow keys, Escape, focus return; images are real links without JS | PASS |
+| 19 | Before/after slider operable by keyboard with announced value | PASS |
+| 20 | 3D model: nothing 3D is downloaded until "View in 3D"; then the viewer loads and shows the model (desktop Chromium) | PASS |
+| 21 | Work filter results re-render and animate in (only after interaction) | PASS |
+| 22 | `/keystatic` and `/api/keystatic/*` return 404 on a production server without GitHub mode | PASS |
 | — | Firefox, WebKit desktop, iPhone (WebKit) projects | **NOT RUN** — browser binaries are not installed in this container and the environment prohibits `playwright install`. Configured in `playwright.config.ts`; the CI workflow installs and runs them. |
 
-Issues found by the suite and fixed during this session: preview card stuck at zero scale (GSAP absorbed the CSS `scale`), focus not returned after Escape (visibility check used `offsetParent`, always `null` for fixed elements), "Pause motion" text contrast (opacity 0.85), horizontal overflow from the footer curve, clipped active-dot in the mobile drawer.
+Issues found by the suite and fixed: the no-JS work list stalled behind its entrance animation (animation now runs only after interaction); earlier,  preview card stuck at zero scale (GSAP absorbed the CSS `scale`), focus not returned after Escape (visibility check used `offsetParent`, always `null` for fixed elements), "Pause motion" text contrast (opacity 0.85), horizontal overflow from the footer curve, clipped active-dot in the mobile drawer.
 
 ## Performance (Lighthouse 13.5.0, production server, median of 3)
 
@@ -51,17 +59,19 @@ Mobile = Lighthouse default (simulated slow 4G, 4× CPU, Moto G Power viewport).
 
 | Page | Form factor | Perf | A11y | Best Pr. | SEO | LCP | TBT | CLS | FCP | Transfer | Script (gz) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `/` | mobile | **98** | 100 | 100 | 66* | 2.45 s | 34 ms | 0 | 0.91 s | 303 KB | 215 KB† |
-| `/work/soft-matter` | mobile | **97** | 100 | 100 | 66* | 2.49 s | 106 ms | 0 | 0.91 s | 285 KB | 196 KB |
-| `/` | desktop | **100** | 100 | 100 | 66* | 0.56 s | 0 ms | 0 | 0.25 s | 296 KB | 215 KB† |
-| `/work/soft-matter` | desktop | **100** | 100 | 100 | 66* | 0.57 s | 0 ms | 0 | 0.25 s | 283 KB | 196 KB |
+| `/` | mobile | **94** | 100 | 100 | 66* | 2.68 s | 92 ms | 0.002 | 0.92 s | 318 KB | 222 KB† |
+| `/work/soft-matter` | mobile | **96** | 100 | 100 | 66* | 2.01 s | 152 ms | 0.002 | 0.92 s | 304 KB | 206 KB |
+| `/` | desktop | **98** | 100 | 100 | 66* | 0.58 s | 0 ms | 0.003 | 0.26 s | 311 KB | 222 KB† |
+| `/work/soft-matter` | desktop | **98** | 100 | 100 | 66* | 0.59 s | 0 ms | 0.003 | 0.26 s | 302 KB | 206 KB |
+
+Run-to-run variance is large for simulated mobile LCP: Home 2.74 / 2.05 / 2.68 s, project 1.98 / 2.01 / 2.65 s (performance 91–97). These numbers are after adding the CMS, intro, curtain, Lenis, lightbox, before/after and the 3D viewer. Compared with the earlier build (98/97 mobile, LCP 2.45/2.49 s), total script transfer on Home rose from 215 to 222 KB gz. Lenis and the 3D viewer (≈ 1 MB) are not in the initial load: Lenis loads after hydration on fine pointers only, and the viewer only on request.
 
 \* SEO 66 is caused only by the `is-crawlable` audit, i.e. the intentional preview `noindex`. All other SEO audits pass. It cannot be re-measured as indexable until real identity/content exist.
 † Whole page lifetime as Lighthouse counts it. Breakdown for mobile Home (run 1 network log): **≈ 161 KB gz initial-route JavaScript** (requested in the first ~75 ms; React DOM chunk alone 72.5 KB), **27.6 KB GSAP** requested after hydration (~175 ms), and **≈ 27 KB** of Next.js prefetches for routes linked on the page (~240 ms).
 
 Bottlenecks fixed (before → after, mobile Home): zod and all content data were bundled into every page via the header/menu (−87 KB gz), the disabled Web Vitals chunk loaded anyway (−15 KB), ScrollTrigger replaced by CSS scroll-driven animations (≈ −17 KB, estimated), GSAP moved off the critical path. Script transfer 308 → 215 KB total (≈ 161 KB initial-route), Best Practices 96 → 100 (zod's `new Function` probe also triggered a CSP report), LCP 2.77 → 2.45 s.
 
-Remaining notes: mobile LCP sits just under the 2.5 s lab target; the observed (unthrottled) LCP is ~0.1 s and the LCP element is the hero name text, so the simulated figure is dominated by script download estimates. Real portraits/project media will change these numbers — re-run after content lands. **Field Core Web Vitals (INP, p75 LCP/CLS) do not exist yet**; there is no traffic. Optional collection is ready (`NEXT_PUBLIC_WEB_VITALS`).
+Remaining notes: mobile Home's median LCP (2.68 s) is slightly over the 2.5 s lab target in this simulated run, while the project page is under it; the observed (unthrottled) LCP is ~0.1 s and the LCP element is the hero name text, so the simulated figure is dominated by script download estimates. Real portraits/project media will change these numbers — re-run after content lands. **Field Core Web Vitals (INP, p75 LCP/CLS) do not exist yet**; there is no traffic. Optional collection is ready (`NEXT_PUBLIC_WEB_VITALS`).
 
 ## Visual QA
 
@@ -70,6 +80,20 @@ Screenshots (desktop 1440×900, mobile Pixel 7) for every route, full pages, men
 Manually reviewed: hero layering (portrait placeholder, marquee, hanger, role), intro/CTA rhythm, work rows and hover preview, sliding rows, footer curve and CTA on the hairline, menu drawer, Work filters/list/grid, project header/meta/gallery/next case, About split + services, dark Contact form, 404, mobile compositions.
 
 **Reference comparison could not be done side by side**: the reference site was blocked by the network policy (see `reference-audit.md`), so fidelity is to recalled composition and behaviour, not measured pixels.
+
+## Content management (Keystatic)
+
+| Check | Result |
+| --- | --- |
+| Dev: open `/keystatic`, edit a project field, save → YAML on disk updated, site reflects it | PASS (Playwright-driven, then reverted) |
+| Saving in the CMS does not rename existing media (after `pnpm media:normalize`) | PASS |
+| Content loader output equals Keystatic's own `createReader` for every entry | PASS (unit test) |
+| Production, local mode: `/keystatic` and `/api/keystatic/tree` → 404 | PASS |
+| Production, GitHub mode with dummy credentials: admin renders "Log in with GitHub" under its own CSP | PASS (no real GitHub App or sign-in tested; needs your account) |
+
+## Single-file preview (Claude artifact)
+
+Built with `scripts/preview-artifact/build.mjs` and tested in headless Chromium via `file://`. jsDelivr is blocked in this container, so Lenis and model-viewer were served from the identical `node_modules` files during the test. Checks: intro plays once; curtain on navigation; filters + grid/list; before/after keyboard; 3D model reaches `ready`; lightbox open/step/close with focus return; video plays; no horizontal overflow on mobile routes; mobile menu navigation; **0 console/page errors**. One bug found and fixed (the hidden grid view rendered under the list).
 
 ## Accessibility (manual)
 

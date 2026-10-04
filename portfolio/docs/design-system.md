@@ -20,7 +20,7 @@ The hero gray is darker than the recalled reference gray on purpose: lighter gra
 
 ## Typography
 
-One family: **Hanken Grotesk** variable (OFL-1.1, self-hosted via `next/font/local`, size-adjusted Arial fallback to avoid layout shift). **IBM Plex Sans Arabic** (OFL-1.1) is declared with an Arabic `unicode-range`, so it downloads only when Arabic text appears. Licences: `src/fonts/LICENSE-*.txt`.
+One family: **Hanken Grotesk** variable (OFL-1.1, self-hosted via `next/font/local`, size-adjusted Arial fallback to avoid layout shift). The site is English-only; **IBM Plex Sans Arabic** (OFL-1.1) stays declared with an Arabic `unicode-range` as a glyph fallback, so it downloads only if Arabic text is ever entered. Licences: `src/fonts/LICENSE-*.txt`.
 
 | Token | Range | Use |
 | --- | --- | --- |
@@ -55,8 +55,14 @@ Display tracking `-0.035em`, display leading `1.02`, body leading `1.55`. Weight
 | `ProjectGallery` + `VideoPoster` | server + client | Original aspect ratios on neutral fields; video created only near viewport, muted loop, pauses offscreen, one decoder at a time, play/pause control |
 | `SiteFooter`, `LocalTime` | server + client | CTA on the hairline, contact pills only when real data exists, Baghdad time rendered after mount (no hydration mismatch) |
 | `ContactForm` | client | Numbered questions, inline errors, live status, duplicate-submit guard, honest states |
-| `RevealController` | client | Short fade/slide-up reveals; content visible without JS |
-| `PageTransition` | server | React `<ViewTransition>` curtain reveal (~650 ms), no navigation lock |
+| `RevealController` + `SplitText` | client + server | Block fade/slide-up reveals; headlines rise word by word from masks (35 ms stagger). Splits wait for the intro or the curtain. Content is visible without JS, and a 3 s CSS failsafe shows words if JS stalls |
+| `Preloader` | client | Once per browser session: "Hello" in a few languages on ink (≈ 1.8 s), then the panel lifts with a curved edge. Set up by an inline boot script before paint, so there is no flash. Skipped with reduced motion, on return visits and without JS. The page underneath is already rendered |
+| `PageCurtain` | client | Internal link clicks: an ink curtain with the destination name covers the page (500 ms), the route changes, then it lifts with a curved edge (750 ms). Skipped for modified clicks, the same page, back/forward and reduced motion; a 6 s failsafe always clears it |
+| `SmoothScroll` | client | Lenis inertial scrolling (`lerp 0.1`), loaded on demand for fine pointers only. Paused while the menu or lightbox is open; never on touch or with reduced motion |
+| `GalleryLightbox` | client | Every gallery image is a real link to the full file (works without JS). With JS, a native `<dialog>` opens: arrows/keys/swipe, click-to-zoom, counter and caption, neighbour preloading, focus returns to the image |
+| `CompareSlider` | client | Before/after: a native range input (arrow keys, Home/End) under a draggable handle; announced as "45% Wireframe, 55% Final render" |
+| `ModelViewer` | client | 3D `.glb`: poster plus a "View in 3D" button. `@google/model-viewer` (with three.js, ≈ 1 MB) is imported only on press. It shows loading and error (retry) states, drag to rotate, scroll/pinch to zoom, and auto-rotates unless reduced motion is on |
+| `Analytics` | client | Optional Vercel Web Analytics or Plausible, both cookieless; off unless configured |
 
 ## Motion
 
@@ -68,11 +74,17 @@ Display tracking `-0.035em`, display leading `1.02`, body leading `1.55`. Weight
 | Sliding rows, footer curve, hero drift | CSS scroll-driven animations | Disabled by media query |
 | Menu | CSS transitions 600 ms `cubic-bezier(.76,0,.24,1)`, staggered links | Instant |
 | Reveals | CSS 650 ms opacity/translate | Shown immediately |
-| Route change | View Transition clip reveal 650 ms, old page 450 ms | Instant |
+| Intro (first visit) | Word cycle ≈ 1.8 s, curved lift 800 ms | Skipped |
+| Route change | Curtain cover 500 ms → lift 750 ms with destination label | Instant navigation |
+| Headline reveal | Words rise from masks, 900 ms, 35 ms stagger | Shown immediately |
+| Work filter / view change | Results re-enter with a short staggered rise (only after interaction, never on load) | Instant |
+| Scrolling | Lenis smoothing on fine pointers | Native scrolling |
 
 Durations: hover 200 ms, buttons 400 ms, menu 600 ms, reveal 650 ms. GSAP is imported on demand after hydration (`src/lib/gsap.ts`), so it never delays first paint; animation is an enhancement and the site works if it fails to load.
 
 ## Deliberate omissions
 
-- No long "Hello" preloader, no smooth-scroll hijacking, no WebGL/Three.js — rendered images and video showcase 3D work at a fraction of the cost.
+- The intro, curtain and smooth scroll were added for reference fidelity but stay off the critical path: the page is server-rendered and usable underneath, each plays once, and all are skipped with reduced motion. Smooth scroll never runs on touch devices.
+- WebGL only on request: 3D models load when the visitor asks, so project pages keep their image-first performance.
+- No site-wide custom cursor and no dark theme. Both were left out because they would change the reference's identity; the "View" cursor appears only over project rows.
 - No bento grids, glass cards, gradients-for-decoration, skill bars or badges beyond the honest "Sample" tags.

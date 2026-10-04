@@ -25,7 +25,7 @@ export function SiteHeader({ shortName, banner }: { shortName: string; banner?: 
 					{banner}
 				</p>
 			)}
-			<header className={styles.header} data-theme={theme} style={{ viewTransitionName: 'site-header' }}>
+			<header className={styles.header} data-theme={theme}>
 				<Link href="/" className={styles.brand}>
 					<span className={styles.copyright} aria-hidden="true">
 						©

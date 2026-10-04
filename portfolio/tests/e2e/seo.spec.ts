@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 test.describe('metadata and indexing (preview build)', () => {
 	test.skip(({ browserName }) => browserName !== 'chromium', 'metadata is browser-independent');

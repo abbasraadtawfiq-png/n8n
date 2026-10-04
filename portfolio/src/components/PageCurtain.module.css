@@ -1,0 +1,105 @@
+.curtain {
+	position: fixed;
+	inset: 0;
+	z-index: 90;
+	display: grid;
+	place-items: center;
+	background: var(--color-ink);
+	color: #fff;
+	pointer-events: none;
+	visibility: hidden;
+	transform: translateY(100%);
+}
+
+/* Curved leading and trailing edges, like a sheet being pulled. */
+.curtain::before,
+.curtain::after {
+	content: '';
+	position: absolute;
+	left: -10%;
+	width: 120%;
+	height: 22vh;
+	background: inherit;
+	border-radius: 50%;
+	transition: transform 0.5s var(--ease-in-out);
+}
+
+.curtain::before {
+	top: -11vh;
+}
+
+.curtain::after {
+	bottom: -11vh;
+}
+
+.curtain[data-phase='cover'],
+.curtain[data-phase='covered'],
+.curtain[data-phase='reveal'] {
+	visibility: visible;
+	pointer-events: auto;
+}
+
+.curtain[data-phase='cover'] {
+	animation: cover 500ms var(--ease-in-out) both;
+}
+
+.curtain[data-phase='covered'] {
+	transform: none;
+}
+
+.curtain[data-phase='covered']::before,
+.curtain[data-phase='covered']::after {
+	transform: scaleY(0);
+}
+
+.curtain[data-phase='reveal'] {
+	animation: reveal 750ms var(--ease-in-out) both;
+	pointer-events: none;
+}
+
+.curtain[data-phase='reveal']::before {
+	transform: scaleY(0);
+}
+
+@keyframes cover {
+	from {
+		transform: translateY(100%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes reveal {
+	from {
+		transform: translateY(0);
+	}
+	to {
+		transform: translateY(-120%);
+	}
+}
+
+.label {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6em;
+	font-size: var(--text-2xl);
+	letter-spacing: -0.02em;
+	line-height: 1;
+	opacity: 0;
+	transition: opacity 0.25s ease 0.15s;
+}
+
+.curtain[data-phase='cover'] .label,
+.curtain[data-phase='covered'] .label {
+	opacity: 1;
+}
+
+.dot {
+	width: 0.3em;
+	height: 0.3em;
+	border-radius: 50%;
+	background: #fff;
+}

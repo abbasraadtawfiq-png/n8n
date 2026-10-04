@@ -1,0 +1,90 @@
+.root {
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	user-select: none;
+	touch-action: pan-y;
+}
+
+.image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.before {
+	position: absolute;
+	inset: 0;
+	clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+}
+
+.handle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: var(--pos);
+	width: 2px;
+	margin-left: -1px;
+	background: #fff;
+	pointer-events: none;
+}
+
+.knob {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: grid;
+	place-items: center;
+	width: 3rem;
+	height: 3rem;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+	background: var(--color-accent);
+	color: #fff;
+	font-size: 1.1rem;
+	box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.25);
+	transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.range:focus-visible ~ .handle .knob,
+.root:hover .knob {
+	transform: translate(-50%, -50%) scale(1.08);
+}
+
+.tag {
+	position: absolute;
+	top: 1rem;
+	padding: 0.35rem 0.8rem;
+	border-radius: var(--radius-pill);
+	background: rgba(28, 29, 32, 0.72);
+	color: #fff;
+	font-size: var(--text-xs);
+	pointer-events: none;
+}
+
+.tagBefore {
+	left: 1rem;
+}
+
+.tagAfter {
+	right: 1rem;
+}
+
+.range {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: ew-resize;
+	touch-action: pan-y;
+}
+
+.root:has(.range:focus-visible) {
+	outline: 2px solid var(--color-focus);
+	outline-offset: 4px;
+}

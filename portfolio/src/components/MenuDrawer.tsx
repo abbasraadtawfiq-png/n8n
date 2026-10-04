@@ -81,7 +81,6 @@ export function MenuDrawer({ socials }: { socials: { label: string; href: string
 				aria-controls={drawerId}
 				aria-label={open ? strings.menu.close : strings.menu.open}
 				onClick={() => toggleMenu(buttonRef.current)}
-				style={{ viewTransitionName: 'menu-button' }}
 				inert={!(scrolled || open)}
 			>
 				<span className={styles.burger} aria-hidden="true" />
@@ -91,7 +90,7 @@ export function MenuDrawer({ socials }: { socials: { label: string; href: string
 
 			<nav id={drawerId} className={styles.drawer} aria-label={strings.nav.navigation} inert={!open}>
 				<span className={styles.curve} aria-hidden="true" />
-				<div className={styles.inner}>
+				<div className={styles.inner} data-lenis-prevent="">
 					<div>
 						<p className={styles.heading}>{strings.nav.navigation}</p>
 						<ul className={styles.links}>
