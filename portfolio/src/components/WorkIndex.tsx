@@ -120,7 +120,7 @@ export function WorkIndexView({
 			) : view === 'grid' ? (
 				<ul className={styles.grid}>
 					{visible.map((p) => (
-						<li key={p.slug}>
+						<li key={p.slug} data-category={p.category}>
 							<ProjectCard project={p} />
 						</li>
 					))}

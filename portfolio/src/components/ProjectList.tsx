@@ -125,7 +125,7 @@ export function ProjectList({ projects, showHeader = false, titleTag: Title = 'h
 				data-year={showYear || undefined}
 			>
 				{projects.map((project, i) => (
-					<li key={project.slug} className={styles.item}>
+					<li key={project.slug} className={styles.item} data-category={project.category}>
 						<Link
 							href={`/work/${project.slug}`}
 							className={styles.row}

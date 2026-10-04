@@ -30,6 +30,8 @@ This directory is self-contained inside the repository (its own `pnpm-workspace.
 
 Visual QA screenshots: `BASE_URL=http://localhost:3000 node scripts/screenshots.mjs docs/qa/screenshots`.
 
+Single-file interactive preview (for hosts that cannot run Next.js, e.g. a shared Claude artifact): with a production server running, `BASE_URL=http://localhost:3000 node scripts/preview-artifact/build.mjs out/preview.html`. It snapshots every route, inlines CSS/fonts/media, and `scripts/preview-artifact/runtime.js` re-creates the interactions; the contact form cannot send from it.
+
 ## Project structure
 
 ```
